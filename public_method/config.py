@@ -1,0 +1,9 @@
+token = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRfaWQiOiIwMDAwMDAiLCJ1c2VyX25hbWUiOiJyb2NrIiwicmVhbF9uYW1lIjoi5ZC05Lit5Y2JIiwiYXZhdGFyIjoiIiwiYXV0aG9yaXRpZXMiOlsiYWRtaW5pc3RyYXRvciJdLCJjbGllbnRfaWQiOiJzYWJlciIsInJvbGVfbmFtZSI6ImFkbWluaXN0cmF0b3IiLCJsaWNlbnNlIjoicG93ZXJlZCBieSBibGFkZXgiLCJwb3N0X2lkIjoiMTEyMzU5ODgxNzczODY3NTIwMSIsInVzZXJfaWQiOiIxNjM4NDQwMzA3ODU0NDc1MjY1Iiwicm9sZV9pZCI6IjExMjM1OTg4MTY3Mzg2NzUyMDEiLCJzY29wZSI6WyJhbGwiXSwibmlja19uYW1lIjoi5ZC05Lit5Y2JIiwib2F1dGhfaWQiOiIiLCJkZXRhaWwiOnsidGVuYW50TmFtZSI6IuWIhuS5kOayueermSJ9LCJleHAiOjE2ODE5NzgwMzIsImRlcHRfaWQiOiIxMTIzNTk4ODEzNzM4Njc1MjAxIiwianRpIjoiZjYzNTQ3NzQtM2MxNi00NjYxLWExNzgtNmExYjViYjM0MTU2IiwiYWNjb3VudCI6InJvY2sifQ.KbR5WW_I4JRJ7FZ-z78g4HC1i86_gPndCC68qHJR_ug'
+Authorization = 'hD0OrdmN2CLRfxFm84Sk4E0r4rNymvDagre29Q9uPzp5C26ZiPb+9R8eh5ytKQFIIAlCS6cFF7qKgQGuFAgsfTJn3xD7rgZJS8Flhir8FkM+BLzrjZSk8kj+tc4O6KupPBztS8ds92gr7yRfT5TxT6l+fRA0cyRy5W8UhdGUHSk='
+headers = {
+        'Authorization': Authorization,
+        'Blade-Auth': token,
+        'Content-Type': 'application/json'
+        }
+testhost = "https://5r5152q357.goho.co/right/api"
+onlinehost = "https://right.rayoservice.com/api"
