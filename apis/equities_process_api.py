@@ -79,7 +79,7 @@ def get_commodity_code(key, host):
 def add_commodity(name, thirdGoodCode, key, host):
     url = f'{host}/blade-rayo-platform-supplier/sup-good/submit'
     body = {"supplierCode":"SUP2303000000000005","goodName":f"{name}测试","goodType":"虚拟类","goodSubType":"其他","goodDescription":"测试测试","settlementType":"1","goodSpec":"其他","goodSpecCode":"11508969352814634","goodSubSpec":"其他","costPrice":"1","marketPrice":"1","paperAmount":"1","ruleDescription":"","codeGetType":"API","hasInUserAccount":"true","thirdGoodCode":f"{thirdGoodCode}","sourceStore":f"{name}","listPicUrl":"","listSupLicPic":[],"listPsSupplierGoodMainPicOneToOne":[],"listPsSupplierGoodMainPicSixteenToNine":[],"listPsSupplierGoodDetailPic":[],"listPsSupplierGoodVideo":[],"listSupplierGoodStoreMapping":[],"removeApplicableStoreList":[],"applicableFormRequest":{},"goodRating":"五星","rate":"1"}
-    payload = json.dumps(dict(body, **get_commodity_code(key)))
+    payload = json.dumps(dict(body, **get_commodity_code(key, host)))
     resp = requests.post(url, headers=headers, data=payload)
     if resp.status_code == 200:
         if resp.json()['code'] == 200:
@@ -93,19 +93,23 @@ def add_commodity(name, thirdGoodCode, key, host):
 
 
 # 3.3查询所有商品，获取listSupplierGoodId
-def get_listSupplierGoodId(name, host):
-    url = f'{host}/blade-rayo-platform-supplier/sup-good/list?thirdGoodCode=&goodName={name}&hasOnShelf=&goodCode=&supplierCode=&total=221&current=1&size=10'
+def get_listSupplierGoodId(name, host, thirdGoodCode):
+    url = f'{host}/blade-rayo-platform-supplier/sup-good/list?thirdGoodCode=&goodName={name}测试&hasOnShelf=&goodCode=&supplierCode=&total=221&current=1&size=10'
     resp = requests.get(url, headers=headers)
     # print(resp.json())
     if resp.status_code == 200:
         if resp.json()['code'] == 200:
             goodid = resp.json()['data']['records'][0]['id']
+            for i in resp.json()['data']['records']:
+                if i['thirdGoodCode'] == thirdGoodCode:
+                    exist = True
+                    break
         else:
             print('商品查询失败，错误原因是：' + resp.json()['msg'])
     else:
         print('返回失败，错误原因是：' + resp.json()['msg'])
         assert False
-    return goodid
+    return goodid, exist
 
 
 # 3.4商品上架
@@ -315,14 +319,18 @@ def coupon_code_msg(name, host):
     resp = requests.get(url, headers=headers)
     # print(resp.json()['data']['records'][0]['orderStatus'])
     if resp.status_code == 200:
-        if resp.json()['code'] == 200:
-            print('查询原始码状态成功')
-            if resp.json()['data']['records'][0]['drawStatus'] == '已领取':
-                print(name + '的原始码状态为已领取!')
+        try:
+            if resp.json()['code'] == 200:
+                if resp.json()['data']['records'][0]['drawStatus'] == '已领取':
+                    print('查询原始码状态成功')
+                    print(name + '的原始码状态为已领取!')
+                else:
+                    print(name + '的原始码状态为为：' + resp.json()['data']['records'][0]['drawStatus'])
             else:
-                print(name + '的原始码状态为为：' + resp.json()['data']['records'][0]['drawStatus'])
-        else:
-            print('查询原始码状态失败，错误原因是：' + resp.json()['msg'])
+                print('查询原始码状态失败，错误原因是：' + resp.json()['msg'])
+        except Exception as e:
+            print(e)
+            print(resp.json())
     else:
         print('返回失败，错误原因是：' + resp.json()['msg'])
         assert False
@@ -349,8 +357,12 @@ def coupon_code_used(name, host):
     return
 
 
+# 查询现在有没有存在这个商品。判断第三方供方商品编号是否存在
+
+
+
 if __name__ == '__main__':
-    # add_system_dict('测试', '测试')
+    # add_system_dict('测试', '测试', testhost)
     # add_equities_code('测试', '测试')
     # get_commodity_code('qj_wn')
     # add_commodity('weineng','qj_wn')
