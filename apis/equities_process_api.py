@@ -99,11 +99,15 @@ def get_listSupplierGoodId(name, host, thirdGoodCode):
     # print(resp.json())
     if resp.status_code == 200:
         if resp.json()['code'] == 200:
-            goodid = resp.json()['data']['records'][0]['id']
-            for i in resp.json()['data']['records']:
-                if i['thirdGoodCode'] == thirdGoodCode:
-                    exist = True
-                    break
+            try:
+                goodid = resp.json()['data']['records'][0]['id']
+                for i in resp.json()['data']['records']:
+                    if i['thirdGoodCode'] == thirdGoodCode:
+                        exist = True
+                        break
+            except Exception as e:
+                print(e)
+                exist = False
         else:
             print('商品查询失败，错误原因是：' + resp.json()['msg'])
     else:
@@ -276,8 +280,8 @@ def commodity_order_msg(productOrderCode, host):
     # print(resp.json()['data']['records'][0]['orderStatusCn'])
     if resp.status_code == 200:
         if resp.json()['code'] == 200:
+            print('查询商品订单成功')
             if resp.json()['data']['records'][0]['orderStatusCn'] == '成功':
-                print('查询商品订单成功')
                 print(productOrderCode + '的供方商品订单状态为成功')
             elif resp.json()['data']['records'][0]['orderStatusCn'] == '失败':
                 print(productOrderCode + '的供方商品订单状态为失败,原因为：' + resp.json()['data']['records'][0]['failureReason'])
@@ -298,7 +302,7 @@ def product_order_msg(productOrderCode, host):
     # print(resp.json()['data']['records'][0]['orderStatus'])
     if resp.status_code == 200:
         if resp.json()['code'] == 200:
-            print('查询商品订单成功')
+            print('查询产品订单成功')
             if resp.json()['data']['records'][0]['orderStatus'] == '成功':
                 print(productOrderCode + '的供方商品订单状态为成功')
             elif resp.json()['data']['records'][0]['orderStatus'] == '失败':
@@ -322,7 +326,7 @@ def coupon_code_msg(name, host):
         try:
             if resp.json()['code'] == 200:
                 if resp.json()['data']['records'][0]['drawStatus'] == '已领取':
-                    print('查询原始码状态成功')
+                    print('查询原始码状态成功!')
                     print(name + '的原始码状态为已领取!')
                 else:
                     print(name + '的原始码状态为为：' + resp.json()['data']['records'][0]['drawStatus'])
@@ -342,31 +346,31 @@ def coupon_code_used(name, host):
     url = f'{host}/blade-rayo-platform-supplier/sup-coupon-code-used/list?couponCode=&couponCode2=&couponName={name}&supplierName=&useStartTime=&useEndTime=&drawStatus=&batchCode=&useStatus=&total=5566&current=1&size=30'
     resp = requests.get(url, headers=headers)
     # print(resp.json()['data']['records'][0]['orderStatus'])
-    if resp.status_code == 200:
-        if resp.json()['code'] == 200:
-            print('查询原始码领取状态成功')
-            if resp.json()['data']['records'][0]['drawStatus'] == '已领取':
-                print(name + '的原始码领取状态为已领取!')
+    try:
+        if resp.status_code == 200:
+            if resp.json()['code'] == 200:
+                print('查询原始码领取状态成功')
+                if resp.json()['data']['records'][0]['drawStatus'] == '已领取':
+                    print(name + '的原始码领取状态为已领取!')
+                else:
+                    print(name + '的原始码领取状态为为：' + resp.json()['data']['records'][0]['drawStatus'])
             else:
-                print(name + '的原始码领取状态为为：' + resp.json()['data']['records'][0]['drawStatus'])
-        else:
-            print('查询原始码状态失败，错误原因是：' + resp.json()['msg'])
+                print('查询原始码状态失败，错误原因是：' + resp.json()['msg'])
+    except Exception as e:
+        print(e)
+        print(resp.json())
     else:
         print('返回失败，错误原因是：' + resp.json()['msg'])
         assert False
     return
 
 
-# 查询现在有没有存在这个商品。判断第三方供方商品编号是否存在
-
-
-
 if __name__ == '__main__':
-    # add_system_dict('测试', '测试', testhost)
+    add_system_dict('测试', '测试', testhost)
     # add_equities_code('测试', '测试')
     # get_commodity_code('qj_wn')
     # add_commodity('weineng','qj_wn')
-    print(get_listSupplierGoodId('微能测试',"https://5r5152q357.goho.co/right/api"))
+    # print(get_listSupplierGoodId('微能测试',"https://5r5152q357.goho.co/right/api"))
     # commodity_up(get_listSupplierGoodId('weineng'))
     # add_product('weineng')
     # product_up(get_productid('weineng'))

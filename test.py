@@ -6,10 +6,16 @@ import json
 #      print(i['thirdGoodCode'])
 
 
-def a():
-     b = 1
-     c = 2
-     return b,c
+# def a():
+#      b = 1
+#      c = 2
+#      return b,c
+#
+# print(a()[0])
 
-print(a()[0])
+b = True
+c = False
+
+if c:
+     print(111)
 
