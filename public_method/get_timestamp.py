@@ -14,6 +14,11 @@ def get_nexyeartime():
     return nextyeartime
 
 
+def get_nowtime_timestamp():
+    return int(datetime.datetime.now().timestamp())
+
+
 if __name__ == '__main__':
-    get_nowtime()
-    get_nexyeartime()
+    print(get_nowtime())
+    print(get_nexyeartime())
+    print(get_nowtime_timestamp())

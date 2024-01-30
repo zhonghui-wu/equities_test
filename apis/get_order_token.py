@@ -16,7 +16,6 @@ def get_token(host):
     'Content-Type': 'application/json'
   }
   response = requests.request("POST", url, headers=headers, data=payload)
-  # print(response.json()['data']['accessToken'])
   return response.json()['data']['accessToken']
 
 
